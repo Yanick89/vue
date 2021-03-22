@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisation de Axios</title>
+</head>
+
+<!-- style -->
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        font-family: sans-serif;
+    }
+    ol{
+        list-style: none;
+    }
+    ol li{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    ol li img{
+        height: 100px;
+        width: 90px;
+    }
+</style>
+
+<body>
+    <div id="app2">
+       <h2> {{ hello }} </h2>
+       <ol>
+        <gauliste v-for='gaulois in liste' v-bind:els="gaulois" v-bind:key="gaulois.id"></gauliste>
+       </ol>
+    </div>
+
+    <!-- mise en place du template -->
+    <template id="cool">
+        <li> 
+            <img v-bind:src="els.image" alt="personnes gaulois de asterix et obelix" height="120" width="120">
+             <h4> {{els.nom}} 😕</h4>
+        </li>
+    </template>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+
+
+    <!-- Mon Composant -->
+
+    <script>  
+    const app = Vue.component('gauliste',{
+        template: '#cool',
+        props: ['els'],
+    })
+
+     
+    // ma vue
+       const app2 = new Vue ({
+           el: '#app2',
+           data:{
+            hello: 'Salut le monde',
+            liste: []
+           },
+
+           mounted(){
+               const lien = 'https://jsongaulois.jmfino.fr/listeVillageois.php'
+               axios.get(lien)
+               .then(response =>  this.liste = response.data)
+               .catch(error => {console.log(error )})
+               console.log(this.liste);
+           }
+       })
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon apllication Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h4 :title="essai"> {{ msgBienvenue }} </h4>
+
+
+        <h5>{{ maListe }}</h5>
+        <ol>
+            <li v-for='legumes in fruitsEtLegumes'> {{ legumes.nom }} {{ legumes.prix }}fcfa</li>
+        </ol>
+        <p>Le total de ma Course: <strong>{{coutTotal}}fcfa 😉</strong></p>
+        <div>
+           <p> Découvrez la somme à payer en cliquant sur le bouton</p>
+        </div>
+    
+        <form>
+            <label for="niama">un mot en entrée</label> <br>
+            <input type="text" id="niama" v-model="message"> <br>
+            <span v-if="message">Mon message est le suivant: {{ message }}</span>
+            <span v-else="message">Mon message par défaut</span>
+        </form>  
+        <nami></nami>
+        <chopper v-bind:pirate= "{avis: 'Mort ou Vif, prime à 50millions de Berryl ❤️'}"></chopper>
+    </div>
+
+    <template id="template1">
+        <h3> {{ pirate.avis }} </h3>
+    </template> 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+
+        const nami = Vue.component('nami', {
+            template: '<h3> Aime les trésors. Deuxième Mugiwara récrutée  </h3>'
+        })
+        
+        const tanuki = Vue.component('chopper', {
+            props: ['pirate'],
+             template: '#template1',
+        });
+        
+        const appli = new Vue({
+            el: '#app',
+            data: {
+                message: '',
+                msgBienvenue: ' Superbe, j\'essaie de créer une liste de course à faire',
+                essai: ' là c\est le survol que je suis en train de faire',
+                fruitsEtLegumes: [
+                    { nom: 'banane', prix: 1500 },
+                    { nom: 'avocat', prix: 2000 },
+                    { nom: 'café', prix: 3720 },
+                    { nom: 'ananas', prix: 1000 },
+                    { nom: 'oignon', prix: 500 },
+                    { nom: 'mangue', prix: 1100 },
+                    { nom: 'choux', prix: 500 }
+                ],
+                maListe: 'Ma liste de courses 😊', 
+                hello: 'merci'
+            },
+            
+            computed: {
+                coutTotal() {
+                    const total = this.fruitsEtLegumes.reduce((a, b) => a + b.prix, 0);
+                    return total
+                },
+            },   
+        });
+
+
+    </script>
+
+</body>
+
+</html>
