@@ -1,0 +1,995 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>Page Electro</title>
+    <style>
+        html {
+            font-family: Arial;
+            display: inline-block;
+            margin: 0px auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to right, #8abf2c, #143f17);
+        }
+
+        .header-top {
+            background: #2b2b2b;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 1px 5px #d9dab0;
+        }
+
+        .header-top span {
+            margin: 0 4rem;
+        }
+
+        .header-top span a i {
+            font-size: 2rem;
+            color: #d9dab0;
+        }
+
+        .temp-humid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3% auto;
+        }
+
+        h2 {
+            font-size: 3.0rem;
+        }
+
+        p {
+            display: flex;
+            flex-direction: column;
+            font-size: 3.0rem;
+        }
+
+        p i {
+            font-size: 7rem;
+            color: #ffe268;
+        }
+
+        .units {
+            font-size: 1.2rem;
+        }
+
+        .dht-labels {
+            font-size: 1.5rem;
+            vertical-align: middle;
+            padding-bottom: 15px;
+        }
+
+        .btn-capteur {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-capteur button {
+            margin: 0 1rem;
+            border: none;
+            outline: none;
+            padding: 15px 40px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: .4s ease;
+            margin: .3rem;
+        }
+
+        .btn-capteur button:nth-child(1) {
+            color: #eee;
+            background: #487e95;
+        }
+
+        .btn-capteur button:nth-child(1):hover {
+            color: #2b2b2b;
+            background: #eee;
+        }
+
+        .btn-capteur button:nth-last-child(1):hover {
+            color: #2b2b2b;
+            background: #eee;
+        }
+
+        .btn-capteur button:nth-last-child(1) {
+            color: #eee;
+
+            background: #ac0d0d;
+        }
+
+
+        /* ****************** Calendrier ******************** */
+
+        input,
+        button,
+        textarea {
+            font-family: "Open Sans", sans-serif;
+            font-size: 14px;
+        }
+
+        /* Basis */
+
+        .compte-rebours {
+            margin: .7rem auto !important;
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            font-family: 'Open Sans';
+            font-size: 1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            background: #fff;
+            color: #262626;
+            border-radius: 10px;
+            height: 50px;
+            font-weight: 600;
+            min-width: 70px;
+            padding: 0px 20px;
+            transition: 0.2s ease;
+            cursor: pointer;
+            outline: 0;
+        }
+
+        .btn:hover {
+            color: #FFF;
+            background: #455AF7;
+        }
+
+        .btn-small {
+            min-width: 50px;
+        }
+
+
+        .btn-day {
+            font-family: 'Open Sans';
+            font-size: 1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            background: rgba(0, 0, 0, 0);
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 99;
+            outline: 0;
+            border-radius: 10px;
+            transition: 0.4s all;
+        }
+
+        .btn-day.active {
+            color: #FFF;
+            font-weight: 600;
+            z-index: 99;
+        }
+
+        .btn-day.active::before {
+            position: absolute;
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: #455AF7;
+            border-radius: 10px;
+            z-index: -1;
+            transform: translate(-15px, -10px);
+        }
+
+        .text-field {
+            padding: 10px;
+            height: 50px;
+            width: 200px;
+            border: 1px solid #f0f0f0;
+            border-radius: 10px;
+            margin: 0px 10px 0 0;
+        }
+
+        .title {
+            font-size: 1.3em;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+        }
+
+        /* Calendar */
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100%;
+            background: #ecf1f8;
+        }
+
+        .calendar-assets {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            padding: 10px;
+        }
+
+        #currentDate {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .field {
+            display: flex;
+            width: auto;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .field label {
+            margin: 2px;
+        }
+
+        .form-input {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-assets {
+            display: flex;
+            justify-content: space-between;
+            width: 324px;
+        }
+
+
+
+        .day-assets .btn:nth-child(2) i {
+            padding: 0 10px 0 0 !important;
+        }
+
+        .calendar {
+            height: 370px;
+            width: 324px;
+            border-radius: 18px;
+            background: #ffffff;
+            padding: 10px;
+            user-select: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 18px 18px 0px 0px;
+            padding: 15px;
+            height: 50px;
+            width: 100%;
+            color: #262626;
+        }
+
+        .month {
+            font-size: 0.7em;
+        }
+
+        .icon {
+            padding: 10px;
+            font-size: 1em;
+            margin: 0 0 0 5px;
+            background: #ffffff;
+            color: #455af7;
+            border: none;
+            cursor: pointer;
+            outline: 0;
+        }
+
+        .icon:hover {
+            cursor: pointer;
+        }
+
+        #calendar {
+            width: 100%;
+        }
+
+        .weekends th {
+            font-size: 1em;
+            color: gray;
+            font-weight: 400;
+            width: 40px;
+            margin: 10px 0;
+        }
+
+        #calendar tr {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            margin: 3px;
+        }
+
+        #calendar td {
+            display: flex;
+            height: 40px;
+            width: 40px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 99;
+        }
+
+        /* ****************** popUp******************* */
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 500px;
+            background-color: rgba(43, 42, 41, 0.527);
+            backdrop-filter: blur(.8px);
+            z-index: 10000;
+            opacity: 1;
+            transition: .5s ease;
+            box-shadow: 0 0 5px #555;
+        }
+
+        .content-btn{
+            background-color: #fff;
+            min-height: 90%;
+            width: auto;
+            position: relative;
+            margin: 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 5px;
+        }
+        .content-btn button{
+            margin: 10px auto;
+            padding: 10px 50px;
+        }
+        .content-btn .annuler{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1rem;
+        }
+        /* ******* poule ********* */
+        .active-canard{
+            display: inline-block;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .popup-canard{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100%;
+            width: 100%;
+            background-color: #fff;
+            z-index: 10000;
+            opacity: 1;
+            transition: .5s ease;
+        }
+        /* ******* canard ********* */
+        .active-poule{
+            display: inline-block;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .popup-poule{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100%;
+            width: 100%;
+            background-color: #fff;
+            z-index: 10000;
+            opacity: 1;
+            transition: .5s ease;
+        }
+        .infos-volllaile img{
+            height: 204px;
+        }
+        .infos-volllaile p{
+            font-size: 1.7rem;
+            margin: 5% auto;
+        }
+       
+        /* ******* pentade ********* */
+        .active-pentade{
+            display: inline-block;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .popup-pendate{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100%;
+            width: 100%;
+            background-color: #fff;
+            z-index: 10000;
+            opacity: 1;
+            transition: .5s ease;
+        }
+          /* ************ Caille ********* */
+          .popup-caille{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100%;
+            width: 100%;
+            background-color: #fff;
+            z-index: 10000;
+            opacity: 1;
+            transition: .5s ease;
+        }
+        .active-caille{
+            display: inline-block;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .active {
+            display: inline-block;
+        }
+
+        button.annuler{
+            border: none;
+            outline: none;
+            padding: 8px 18px;
+            background: #455af7;
+            color: #fff;
+            border-radius: 10px
+        }
+
+        /* ******************* Responsive ********************** */
+        @media screen and (max-width: 768px) {
+            html {
+                font-family: Arial;
+                display: block;
+                margin: 0px auto;
+                text-align: center;
+                width: 100%;
+            }
+
+            .header-top {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .header-top span {
+                margin: 0 .5rem;
+            }
+
+         
+
+            .temp-humid p {
+                margin: 10% 0;
+            }
+
+            .temperature,
+            .humidity {
+                font-size: 1.5rem !important;
+            }
+
+            p i {
+                font-size: 4.3rem;
+            }
+
+            .btn-capteur button {
+                padding: 7px 20px;
+                font-size: 1.2rem;
+                margin: .3rem;
+            }
+
+            .popup{
+                width: 100%;
+            }
+
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-top">
+        <img src="./tomave.png" alt="Logo de Tomavè" width="130px">
+        <span> <a href="#" rel="noopener noreferrer"><i class="fas fa-calendar  btn-champ"></i></a> </span>
+    </div>
+    <div class="temp-humid">
+        <p>
+            <i class="fas fa-thermometer-half"></i>
+            <!-- <span id="temperature">%TEMPERATURE%</span> -->
+            <span class="dht-labels">Temperature</span>
+            <span class="units">°C</span>
+        </p>
+        <p>
+            <i class="fas fa-tint"></i>
+            <!-- <span id="humidity">%HUMIDITY%</span> -->
+            <span class="dht-labels">Humidity</span>
+            <sup class="units">%</sup>
+        </p>
+    </div>
+
+  
+    <!-- On -Off lampe -->
+    <div class="btn-capteur">
+        <button class="on">ON </button>
+        <button class="off">OFF</button>
+    </div>
+
+    <!-- On -Off Ventilo -->
+    <div class="btn-capteur">
+        <button class="on">ON </button>
+        <button class="off">OFF</button>
+    </div> 
+    <!-- On -Off moteur -->
+    <div class="btn-capteur">
+        <button class="on">ON </button>
+        <button class="off">OFF</button>
+    </div>
+
+
+    <!--=================================* popUp *=============================-->
+    <div class="popup">
+        <div class="content-btn">
+            <button class="annuler">
+                X
+            </button>
+            <h3>Inforamtion des volailles incubées</h3>
+            <button class="btn-poule">
+                Poule
+            </button>
+            <button class="btn-canard">Canard</button>
+            <button class="btn-pentade">Pentade</button>
+            <button class="btn-caille">Caille</button>
+        </div>      
+    </div>
+    <!--=================================* popUp Infos par volailles *=============================-->
+     <div class="popup-volaille">
+         <div class="popup-poule">
+             <div class="infos-volllaile">
+                <img src="https://th.bing.com/th/id/OIP.VDT0ginPt1yI3okBgkubTgHaHK?pid=ImgDet&rs=1" alt="illustration de la poule">
+                <h3>Infos poule Incubation</h3>
+               <div class="infos">
+                <p>Dureé d'incubation: <strong>21j</strong> </p>
+                <p>Température: <strong>37.7 C°</strong> </p>
+                <p>Humidité: <strong>35.7 C°</strong> </p>
+                <p>nombre de basculement par jour: <strong></strong> </p>
+            </div>
+             </div>
+        </div>
+         <div class="popup-canard">
+            <div class="infos-volllaile">
+                <img src="https://us.123rf.com/450wm/iimages/iimages1303/iimages130300478/18287941-illustration-d-un-canard-blanc-sur-un-fond-blanc.jpg?ver=6" alt="illustration de la poule">
+                <h3>Infos poule Incubation</h3>
+               <div class="infos">
+                <p>Dureé d'incubation: <strong>28j</strong> </p>
+                <p>Température: <strong>37.5 C°</strong> </p>
+                <p>Humidité: <strong>37.2 C°</strong> </p>
+                <p>nombre de basculement par jour: <strong></strong> </p>
+               </div>
+            </div>
+        </div>
+         </div>
+         <div class="popup-pendate">
+            <div class="infos-volllaile">
+                <img src="https://www.lafermeenbresse.fr/userfiles/27828/pintade.png" alt="illustration de la poule">
+                <h3>Infos poule Incubation</h3>
+               <div class="infos">
+                <p>Dureé d'incubation: <strong>21j</strong> </p>
+                <p>Température: <strong>37.7 C°</strong> </p>
+                <p>Humidité: <strong>40C°</strong> </p>
+                <p>nombre de basculement par jour: <strong></strong> </p>
+               </div>
+            </div>
+         </div>
+         <div class="popup-caille">
+            <div class="infos-volllaile">
+                <img src="https://img.freepik.com/vecteurs-libre/dessin-anime-souriant-oiseau-caille-fond-blanc_29190-5377.jpg?size=338&ext=jpg" alt="illustration de la poule">
+                <h3>Infos poule Incubation</h3>
+               <div class="infos">
+                <p>Dureé d'incubation: <strong>17j</strong> </p>
+                <p>Température: <strong>37.7 C°</strong> </p>
+                <p>Humidité: <strong>37.5C°</strong> </p>
+                <p>nombre de basculement par jour: <strong></strong> </p>
+               </div>
+            </div>
+         </div>
+     </div>
+     <!--=================================* popUp Infos par volailles End*=============================-->
+
+    <div class="popup">
+
+        <div class="container">
+            <div class="calendar-assets">
+                <h1 id="currentDate"></h1>
+                
+                <div class="field">
+                    <!-- <label for="date">choisis une date</label> -->
+                    <form class="form-input" id="date-search" onsubmit="return setDate(this)">
+                        <input type="date" class="text-field" name="date" id="date" required>
+                        <!-- <button type="submit" class="btn btn-small" title="Pesquisar"><i class="fas fa-search"></i></button> -->
+                    </form>
+                </div>
+
+                <div class="day-assets">
+                    <button class="btn" onclick="prevDay()" title="Dia anterior">
+                        < </button>
+                            <button class="btn" onclick="resetDate()" title="Dia atual"><i
+                                    class="fas fa-calendar-day"></i>
+                                Initalisation</button>
+                            <button class="btn" onclick="nextDay()" title="Próximo dia"> > </button>
+                </div>
+            </div>
+            <div class="calendar" id="table">
+                <div class="header">
+                    <!-- Aqui é onde ficará o h1 com o mês e o ano -->
+                    <div class="month" id="month-header">
+
+                    </div>
+                    <div class="buttons">
+                        <button class="icon" onclick="prevMonth()" title="Mês anterior"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <button class="icon" onclick="nextMonth()" title="Próximo mês"><i
+                                class="fas fa-chevron-right "></i></button>
+                    </div>
+                </div>
+
+                
+            </div>
+            <button class="annuler">Fermer</button>
+            <div class="compte-rebours">
+                <div id="Compte"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.15.6/index.js" integrity="sha512-LauVuWv8zJ94BpUEsAatwZhTGDHFPIGyO40FFjQo8KZr7v59RmRS5xQsvphBnjbTJ7IKsk3TwloF3p+TY+BdPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    setInterval(function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("temperature").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/temperature", true);
+        xhttp.send();
+    }, 10000);
+    setInterval(function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("humidity").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/humidity", true);
+        xhttp.send();
+    }, 10000);
+
+
+
+    // Script du calencdrier
+    const months = [
+        "Janvier",
+        "Fevrier",
+        "Mars",
+        "Avril",
+        "Mai",
+        "Jun",
+        "Juillet",
+        "Août",
+        "Septembre",
+        "Octobre",
+        "Novembre",
+        "Décembre"
+    ];
+
+    const weekdays = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+
+    // Váriavel principal
+    let date = new Date();
+
+    // Função que retorna a data atual do calendário 
+    function getCurrentDate(element, asString) {
+        if (element) {
+            if (asString) {
+                return element.textContent = weekdays[date.getDay()] + ', ' + date.getDate() + " de " + months[date.getMonth()] + " de " + date.getFullYear();
+            }
+            return element.value = date.toISOString().substr(0, 10);
+        }
+        return date;
+    }
+
+    // Função principal que gera o calendário
+    function generateCalendar() {
+
+        // Pega um calendário e se já existir o remove
+        const calendar = document.getElementById('calendar');
+        if (calendar) {
+            calendar.remove();
+        }
+
+        // Cria a tabela que será armazenada as datas
+        const table = document.createElement("table");
+        table.id = "calendar";
+
+        // Cria os headers referentes aos dias da semana
+        const trHeader = document.createElement('tr');
+        trHeader.className = 'weekends';
+        weekdays.map(week => {
+            const th = document.createElement('th');
+            const w = document.createTextNode(week.substring(0, 3));
+            th.appendChild(w);
+            trHeader.appendChild(th);
+        });
+
+        // Adiciona os headers na tabela
+        table.appendChild(trHeader);
+
+        //Pega o dia da semana do primeiro dia do mês
+        const weekDay = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            1
+        ).getDay();
+
+        //Pega o ultimo dia do mês
+        const lastDay = new Date(
+            date.getFullYear(),
+            date.getMonth() + 1,
+            0
+        ).getDate();
+
+        let tr = document.createElement("tr");
+        let td = '';
+        let empty = '';
+        let btn = document.createElement('button');
+        let week = 0;
+
+        // Se o dia da semana do primeiro dia do mês for maior que 0(primeiro dia da semana);
+        while (week < weekDay) {
+            td = document.createElement("td");
+            empty = document.createTextNode(' ');
+            td.appendChild(empty);
+            tr.appendChild(td);
+            week++;
+        }
+
+        // Vai percorrer do 1º até o ultimo dia do mês
+        for (let i = 1; i <= lastDay;) {
+            // Enquanto o dia da semana for < 7, ele vai adicionar colunas na linha da semana
+            while (week < 7) {
+                td = document.createElement('td');
+                let text = document.createTextNode(i);
+                btn = document.createElement('button');
+                btn.className = "btn-day";
+                btn.addEventListener('click', function () { changeDate(this) });
+                week++;
+
+                // Controle para ele parar exatamente no ultimo dia
+                if (i <= lastDay) {
+                    i++;
+                    btn.appendChild(text);
+                    td.appendChild(btn)
+                } else {
+                    text = document.createTextNode(' ');
+                    td.appendChild(text);
+                }
+                tr.appendChild(td);
+            }
+
+            console.log(btn);
+
+            // Adiciona a linha na tabela
+            table.appendChild(tr);
+
+            // Cria uma nova linha para ser usada
+            tr = document.createElement("tr");
+
+            // Reseta o contador de dias da semana
+            week = 0;
+        }
+        // Adiciona a tabela a div que ela deve pertencer
+        const content = document.getElementById('table');
+        content.appendChild(table);
+        changeActive();
+        changeHeader(date);
+        document.getElementById('date').textContent = date;
+        getCurrentDate(document.getElementById("currentDate"), true);
+        getCurrentDate(document.getElementById("date"), false);
+
+        console.log(date);
+
+        console.log(changeHeader);
+    }
+
+    // Altera a data atráves do formulário
+    function setDate(form) {
+        let newDate = new Date(form.date.value);
+        date = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1);
+        generateCalendar();
+        return false;
+    }
+
+    // Método Muda o mês e o ano do topo do calendário
+    function changeHeader(dateHeader) {
+        const month = document.getElementById("month-header");
+        if (month.childNodes[0]) {
+            month.removeChild(month.childNodes[0]);
+        }
+        const headerMonth = document.createElement("h1");
+        const textMonth = document.createTextNode(months[dateHeader.getMonth()].substring(0, 3) + " " + dateHeader.getFullYear());
+        headerMonth.appendChild(textMonth);
+        month.appendChild(headerMonth);
+
+        console.log(month);
+        console.log(headerMonth);
+    }
+
+    // Função para mudar a cor do botão do dia que está ativo
+    function changeActive() {
+        let btnList = document.querySelectorAll('button.active');
+        btnList.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        btnList = document.getElementsByClassName('btn-day');
+        for (let i = 0; i < btnList.length; i++) {
+            const btn = btnList[i];
+            if (btn.textContent === (date.getDate()).toString()) {
+                btn.classList.add('active');
+            }
+        }
+    }
+
+    // Função que pega a data atual
+    function resetDate() {
+        date = new Date();
+        generateCalendar();
+    }
+
+    // Muda a data pelo numero do botão clicado
+    function changeDate(button) {
+        let newDay = parseInt(button.textContent);
+        date = new Date(date.getFullYear(), date.getMonth(), newDay);
+        generateCalendar();
+    }
+
+    // Funções de avançar e retroceder mês e dia
+    function nextMonth() {
+        date = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+        generateCalendar(date);
+    }
+
+    function prevMonth() {
+        date = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+        generateCalendar(date);
+    }
+
+
+    function prevDay() {
+        date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+        generateCalendar();
+    }
+
+    function nextDay() {
+        date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+        generateCalendar();
+    }
+
+    document.onload = generateCalendar(date);
+
+    let Affiche = document.getElementById("Compte");
+    function Rebour() {
+
+        const dateCopie = null
+
+        let date1 = new Date();
+        let date2 = new Date(date);
+        let sec = (Date.parse(date2) - Date.parse(date1)) / 1000;
+        let n = 24 * 3600;
+        if (sec > 0) {
+            j = Math.floor(sec / n);
+            h = Math.floor(sec % n / 3600);
+            mn = Math.floor(sec % 3600 / 60);
+            sec = Math.floor(sec % 60);
+            Affiche.innerHTML = "Temps restant : " + j + " j " + h + " h " + mn + " min " + sec + " s ";
+            window.status = "Temps restant : " + j + " j " + h + " h " + mn + " min " + sec + " s ";
+        }
+        tRebour = setTimeout("Rebour();", 1000);
+
+    }
+    Rebour();
+
+
+    // Le Script du popUp
+
+    let btn_champ = document.querySelector('.btn-champ'),
+        btn_annuler = document.querySelector('.annuler');
+        btnPoule = document.querySelector('.btn-poule');
+        btnCanard = document.querySelector('.btn-canard');
+        btnPentade = document.querySelector('.btn-pentade');
+        btnCaille = document.querySelector('.btn-caille');
+
+
+    // évènements
+    btn_champ.addEventListener('click', activePopup);
+    btn_annuler.addEventListener('click', fermPopup);
+    btnPoule.addEventListener('click',activePoule);
+    btnCanard.addEventListener('click', activeCanard);
+    btnPentade.addEventListener('click', activePentade);
+    btnCaille.addEventListener('click', activeCaille);
+
+    function activePoule(e) {
+        let champPouleActive = document.querySelector('.popup-poule');
+        champPouleActive.classList.add('active')
+    }
+    function activeCanard(e) {
+        let champCanardActive = document.querySelector('.popup-canard');
+        champCanardActive.classList.add('active')
+    }
+    function activePentade(e) {
+        let champPentadeActive = document.querySelector('.popup-pendate');
+        champPentadeActive.classList.add('active')
+    }
+    function activeCaille(e) {
+        let champCailleActive = document.querySelector('.popup-caille');
+        champCailleActive.classList.add('active')
+    }
+
+
+    // fonctions
+    function activePopup(e) {
+        e.preventDefault();
+        let champActive = document.querySelector('.popup');
+        champActive.classList.add('active-poule')
+    }
+
+    function fermPopup(){
+    console.log("ferme")
+    let champActive = document.querySelector('.popup');
+    champActive.classList.remove('active')
+}
+</script>
+
+</html>
